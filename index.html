@@ -24,6 +24,7 @@
 <meta name="twitter:description" content="The cards don't tell the future. They mirror what's hidden inside you.">
 <meta name="twitter:image" content="https://kai-ilki.github.io/HiDae-Site/assets/icon.png">
 
+<script>document.documentElement.classList.add("js")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -130,20 +131,101 @@
   .hero h1 em { display: block; font-style: italic; font-weight: 400; color: var(--gold-text); }
   .hero .lead { max-width: 30em; margin-bottom: 28px; }
 
-  .spread { position: relative; aspect-ratio: 1 / 1; max-width: 480px; width: 100%; margin: 0 auto; }
-  .spread .art { position: absolute; width: 43%; }
-  .spread .a1 { left: 1%; top: 11%; transform: rotate(-8deg); }
-  .spread .a2 { left: 25.5%; top: 0; width: 49%; z-index: 2; }
-  .spread .a3 { right: 1%; top: 11%; transform: rotate(8deg); }
   .kw {
     background: var(--paper); border-radius: var(--r-content); padding: 16px 20px 18px; text-align: center;
   }
   .kw .eyebrow { font-size: 11px; }
   .kw-word { display: block; margin-top: 8px; font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.2; letter-spacing: 2.2px; text-transform: uppercase; color: var(--ink); }
-  .spread .kw { position: absolute; z-index: 3; left: 50%; bottom: 2%; transform: translateX(-50%); width: 62%; max-width: 240px; box-shadow: var(--sh-float); border: 1px solid var(--line); }
-  .spread .daemon { position: absolute; z-index: 4; right: 2%; bottom: 10%; width: 22%; height: auto; }
   .float { animation: float 7s ease-in-out infinite; }
   @keyframes float { 50% { translate: 0 -8px; } }
+
+
+  /* ---------- Try a draw ---------- */
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  html:not(.js) .jsonly { display: none !important; }
+  .js .nojs { display: none; }
+  .js .result[hidden], .js .drawdeck[hidden] { display: none; }
+  .draw { position: relative; width: 100%; max-width: 480px; margin: 0 auto; scroll-margin-top: 80px; }
+  .draw button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .draw .pill { border: 0; cursor: pointer; background: var(--gold); color: var(--on-accent); font: 700 15px/1 var(--ui); }
+  .draw .pill:hover { background: var(--gold-pressed); }
+
+
+  .r-asked { grid-column: 1 / -1; margin-bottom: 20px; font-size: 16px; line-height: 1.5; color: var(--ink); }
+  .r-asked .eyebrow { display: block; margin-bottom: 4px; color: var(--ink-3); font-size: 11px; }
+
+  /* Deck: the app's 06 Card Draw (blank paper back in a white frame, two backs fanned behind, gold glow) */
+  .drawdeck { position: relative; text-align: center; padding: 8px 0 4px; background: radial-gradient(circle closest-side at 50% 40%, rgba(247,205,133,.5), rgba(254,245,230,.5) 60%, rgba(255,255,255,0) 100%); }
+  .stack { position: relative; display: block; width: 68%; max-width: 270px; aspect-ratio: 1 / 1.62; margin: 12px auto 0; border-radius: 22px; }
+  .back { position: absolute; inset: 0; border-radius: 22px; background: var(--sunken); border: 1px solid var(--line); transition: transform .5s ease; }
+  .back.b1 { transform: rotate(-6deg); }
+  .back.b2 { transform: rotate(5deg); }
+  .back.top, .face-back { padding: 10px; background: var(--ground); box-shadow: var(--sh-card); }
+  .cardface { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; border-radius: 18px; background: var(--paper); padding: 22px 18px; text-align: center; }
+  .hold { font: 700 10px/1.3 var(--ui); letter-spacing: .22em; text-transform: uppercase; color: var(--gold-text); }
+  .cq { margin-top: 14px; font-family: var(--display); font-style: italic; font-weight: 400; font-size: 19px; line-height: 1.38; color: var(--ink); text-wrap: balance; }
+  .cq.long { font-size: 16.5px; }
+  .cq::before, .cq::after { content: ""; display: block; width: 22px; height: 1px; margin: 0 auto; background: var(--bubble-user); }
+  .cq::before { margin-bottom: 14px; }
+  .cq::after { margin-top: 14px; }
+  .js .stack { cursor: pointer; }
+  .js .stack:hover .b1 { transform: rotate(-9deg); }
+  .js .stack:hover .b2 { transform: rotate(8deg); }
+  .js .stack:hover .top { transform: translateY(-6px); }
+  .stack:focus-visible { outline-offset: 6px; }
+  .drawdeck-daemon { position: absolute; right: 2%; top: 4%; width: 22%; max-width: 104px; height: auto; pointer-events: none; }
+  .deck-actions { position: relative; margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 22px; }
+  .js .deck-actions { display: flex; }
+  .drawdeck .pill { height: 52px; padding: 0 32px; }
+  .draw .another { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: 15px; font-weight: 500; color: var(--ink-3); }
+  .draw .another svg { width: 16px; height: 16px; }
+  .draw .another:hover { color: var(--ink); }
+  .drawdeck-hint { position: relative; margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+  html:not(.js) .drawdeck-hint { margin-top: 24px; }
+
+  /* Result */
+  .result { position: relative; }
+  .r-card { position: relative; width: 62%; max-width: 250px; margin: 0 auto; }
+  .flip { position: relative; aspect-ratio: 480 / 637; perspective: 1400px; }
+  .face { position: absolute; inset: 0; border-radius: 18px; border: 1px solid var(--line); backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .face-front { background: var(--ground); padding: 8px; box-shadow: var(--sh-card); transform: rotateY(180deg); }
+  .face-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; background: var(--paper); }
+  .flip.is-up .face-back { transform: rotateY(-180deg); }
+  .flip.is-up .face-front { transform: rotateY(0deg); }
+  .r-kw { position: relative; z-index: 2; width: 96%; margin: -30px auto 0; border: 1px solid var(--line); box-shadow: var(--sh-float); opacity: 0; transform: translateY(8px); transition: opacity .4s ease .45s, transform .4s ease .45s; }
+  .result.is-up .r-kw { opacity: 1; transform: none; }
+  .r-kw { padding-left: 12px; padding-right: 12px; }
+  .r-kw .kw-word { font-size: 26px; white-space: nowrap; }
+  .r-kw .kw-word.mid { font-size: 21px; letter-spacing: 1.6px; }
+  .r-kw .kw-word.long { font-size: 17px; letter-spacing: 1px; }
+  .r-guide { margin-top: 24px; padding: 22px 20px; border-radius: var(--r-content); border: 1px solid var(--line); background: var(--ground); box-shadow: var(--sh-card); outline: none; }
+  .r-step { color: var(--ink-3); font-size: 11px; }
+  .r-step + .r-q { margin-top: 6px; }
+  .r-q { font-size: 16px; color: var(--ink); }
+  .r-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 22px; }
+  .r-chips li { padding: 6px 12px; border-radius: var(--r-chip); border: 1px solid var(--line); background: var(--ground); font-size: 14px; line-height: 1.4; color: var(--ink-2); }
+  .r-starter { margin-top: 8px; font-family: var(--display); font-style: italic; font-size: 19px; line-height: 1.4; color: var(--ink); border-left: 2px solid var(--gold); padding-left: 14px; }
+  .r-note { margin-top: 10px; font-size: 13px; color: var(--ink-3); }
+  .r-cta { margin-top: 24px; }
+  .r-line { font-family: var(--display); font-size: 22px; line-height: 1.25; font-weight: 600; color: var(--ink); margin-bottom: 14px; text-wrap: balance; }
+  .again { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; min-height: 44px; padding: 0 4px; font-weight: 600 !important; font-size: 15px !important; color: var(--gold-text) !important; }
+  .again svg { width: 18px; height: 18px; }
+  .again:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .guide-in { animation: rise .45s ease both; }
+  @keyframes rise { from { opacity: 0; translate: 0 10px; } }
+
+  @media (min-width: 560px) {
+    .result { display: grid; grid-template-columns: 44% 1fr; gap: 0 24px; align-items: start; }
+    .r-card { width: 100%; }
+    .r-guide { margin-top: 0; }
+    .r-cta { grid-column: 1 / -1; }
+  }
+  @media (min-width: 960px) {
+    .draw { max-width: 520px; }
+    .cq { font-size: 22px; }
+    .cq.long { font-size: 19px; }
+    .cardface { padding: 28px 24px; }
+  }
 
   /* ---------- Section scaffolding ---------- */
   section { padding: 72px 0; }
@@ -358,8 +440,7 @@
   @media (min-width: 960px) {
     .hero { padding: 56px 0 96px; }
     .hero .wrap { grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
-    .spread { max-width: 500px; }
-    section { padding: 112px 0; }
+      section { padding: 112px 0; }
     .head { margin-bottom: 56px; }
     .row { grid-template-columns: 1fr 1fr; gap: 72px; padding: 56px 0; }
     .row.flip .phone-slot { order: 2; }
@@ -380,6 +461,8 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .float { animation: none; }
+    .face, .back, .r-kw { transition: none !important; }
+    .guide-in { animation: none; }
     .store, .pill { transition: none; }
   }
 </style>
@@ -419,15 +502,66 @@
         <p class="fine"><b>Free to start.</b> 7-day free trial of HiDae Pro.</p>
       </div>
 
-      <div class="spread">
-        <div class="art a1"><img src="assets/cards/giant-keyhole.jpg" alt="Watercolour card: a giant keyhole in a night sky with light shining through." width="542" height="720"></div>
-        <div class="art a2"><img src="assets/cards/beautiful-butterfly.jpg" alt="Watercolour card: a golden butterfly emerging from its cocoon." width="542" height="720"></div>
-        <div class="art a3"><img src="assets/cards/cup-of-tea.jpg" alt="Watercolour card: a cup of tea steaming on a windowsill in afternoon light." width="542" height="720"></div>
-        <div class="kw" aria-label="Today's word: Freedom">
-          <span class="eyebrow">Today's word</span>
-          <span class="kw-word">Freedom</span>
+      <div class="draw" id="try">
+        <!-- "Try a draw": the face-down card carries the question. Without JS it stays a static card. -->
+        <div class="drawdeck">
+          <div class="stack" data-stack>
+            <span class="back b1"></span><span class="back b2"></span>
+            <span class="back top"><span class="cardface">
+              <span class="hold">Hold this in mind</span>
+              <span class="cq" data-q>What am I still holding on to?</span>
+            </span></span>
+          </div>
+          <img class="drawdeck-daemon float" src="assets/daemon.png" alt="" width="360" height="360">
+          <div class="deck-actions jsonly">
+            <button class="pill" type="button" data-draw>Draw a card</button>
+            <button class="another" type="button" data-swap>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
+              Another question
+            </button>
+          </div>
+          <p class="drawdeck-hint"><span class="jsonly">Try one now. No sign-up, nothing is saved.</span><span class="nojs">Hold the question in mind, then draw your card in the app.</span></p>
         </div>
-        <img class="daemon float" src="assets/daemon.png" alt="Aria, the warm watercolour droplet who guides your reading." width="360" height="360">
+
+        <div class="result jsonly" hidden>
+          <p class="sr-only" aria-live="polite" data-status></p>
+          <p class="r-asked"><span class="eyebrow">You asked</span><span data-asked></span></p>
+          <div class="r-card">
+            <div class="flip">
+              <div class="face face-back"><span class="cardface"><span class="hold">Hold this in mind</span><span class="cq" data-q2></span></span></div>
+              <div class="face face-front"><img data-img alt="" width="480" height="637"></div>
+            </div>
+            <div class="kw r-kw">
+              <span class="eyebrow">Today's word</span>
+              <span class="kw-word" data-word></span>
+            </div>
+          </div>
+          <div class="r-guide" tabindex="-1">
+            <p class="eyebrow r-step">Look</p>
+            <p class="r-q">What catches your eye first?</p>
+            <ul class="r-chips" data-look aria-label="Details you might notice"></ul>
+            <p class="eyebrow r-step">Write</p>
+            <p class="r-starter" data-starter></p>
+            <p class="r-note">In the app, you'd finish this sentence in your own words.</p>
+          </div>
+          <div class="r-cta">
+            <p class="r-line">Aria is waiting to ask the next question.</p>
+            <div class="stores">
+              <a class="store" href="https://apps.apple.com/app/id6763971990?ct=web-draw" aria-label="Download HiDae on the App Store">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+                <span><small>Download on the</small><strong>App Store</strong></span>
+              </a>
+              <a class="store" href="https://play.google.com/store/apps/details?id=com.hermittechllc.innerlight&amp;referrer=utm_source%3Dwebsite%26utm_campaign%3Dweb-draw" aria-label="Get HiDae on Google Play">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
+                <span><small>Get it on</small><strong>Google Play</strong></span>
+              </a>
+            </div>
+            <button class="again" type="button" data-draw>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
+              Draw again
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -742,10 +876,62 @@
           <li><a href="https://www.instagram.com/hidae.app/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="https://www.tiktok.com/@hidae.app" target="_blank" rel="noopener">TikTok</a></li>
           <li><a href="https://www.threads.com/@hidae.app" target="_blank" rel="noopener">Threads</a></li>
+          <li><a href="https://x.com/hidae_app" target="_blank" rel="noopener">X</a></li>
         </ul>
       </div>
     </nav>
   </div>
 </footer>
+<script>
+/* Try a draw: picks a random card and word on the page. No network, nothing stored. */
+(function () {
+  var CARDS = [["lighthouse","a lighthouse on a calm night sea",["The beam of light","The calm sea","The reflection","The small rock"],"The light I'm keeping on right now is..."],["sunrise-mountains","the sun rising behind snowy mountains",["The rising sun","The snowy peaks","The gold rings","The brown slopes"],"What's rising for me right now is..."],["desert-flower","a single red flower in a wide desert",["The red flower","The dry hills","The thin stem","The empty sand"],"What's blooming in me right now, even here, is..."],["sprout-concrete","a green sprout breaking through cracked concrete",["The green leaf","The crack","The grey concrete","The black lines"],"What's pushing through the cracks in my life right now is..."],["fog-path","a faint path through foggy woods",["The faint light","The fog","The bare trees","The path"],"The faint light ahead of me right now is..."],["golden-compass","an ornate golden compass glowing in the dark",["The needle","The gold rim","The dark background","The gold flecks"],"The direction I'm being pulled in right now is..."],["storm-teacup","a teacup with an ocean storm inside",["The giant wave","The small cup","The handle","The calm white around it"],"The storm in my teacup right now is..."],["paper-boat","a paper boat on dark water under the stars",["The white paper boat","The starry sky","The dark water","The small ripples"],"Where I'm sailing to right now is..."],["castle-snail","a snail carrying a castle on its shell",["The castle","The shell","The antennae","The long body"],"What I'm carrying on my back right now is..."],["rope-knot","a huge tangled knot of rope",["The loops","The frayed ends","The tight center","The twisted fibers"],"The knot I can't untie right now is..."],["dove-hand","a white dove resting on an open hand",["The white dove","The open hand","The red feet","The soft feathers"],"Something I'm holding gently right now is..."],["tree-hug","a woman hugging a huge tree trunk in sunlight",["The huge trunk","The wrapped arms","The sunlight","The green leaves"],"What I lean on right now is..."],["riverbanks","two people reaching for each other across still water",["The joined hands","The still water","The reflections","The golden sky"],"Someone I want to reach across to right now is..."],["jellyfish","a tiny glowing jellyfish in a dark ocean",["The glowing body","The long tentacles","The dark water","The tiny specks of light"],"The small light I carry right now is..."],["moon-phases","the phases of the moon in a circle",["The full moon","The crescents","The circle","The blue splash in the middle"],"The phase I'm in right now is..."],["stormy-boat","a small boat on a stormy sea",["The tiny boat","The huge waves","The dark sky","The empty horizon"],"The waves around me right now are..."],["sun-kite","a smiling sun kite in a blue sky",["The smiling sun","The long string","The little bows","The blue sky"],"What's lifting me up right now is..."],["open-birdcage","a bird staying inside an open birdcage",["The open door","The little bird","The gold bars","The ring on top"],"The door that's open for me right now is..."]];
+  var QUESTIONS = ["What am I still holding on to?", "What do I really want right now?", "What have I been putting off?", "Where do I want to put my energy next?", "What am I not letting myself feel?", "What do I need more of in my life?", "What's quietly weighing on me?", "What am I ready to let go of?", "What would make today feel a little lighter?", "What do I already know, deep down?", "What small step could I take next?", "What am I proud of but rarely say out loud?"];
+  var WORDS = ["Calm","Freedom","Safety","Trust","Satisfaction","Hesitation","Longing","Anxiety","Confusion","Loneliness","Exhaustion","Regret","Belonging","Dream","Gift","Key","Light","Love","Seed","Door","Mirror","Mask","Time","Wall","Game","Lock","Money","Miracle"];
+  var root = document.getElementById("try");
+  if (!root) return;
+  var $ = function (s) { return root.querySelector(s); };
+  var deck = $(".drawdeck"), result = $(".result"), flip = $(".flip"), img = $("[data-img]");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var qEl = $("[data-q]"), lastQ = -1, stack = $("[data-stack]");
+  function swap() { lastQ = pick(QUESTIONS.length, lastQ); qEl.textContent = QUESTIONS[lastQ]; qEl.classList.toggle("long", QUESTIONS[lastQ].length > 62); }
+  swap();
+  stack.setAttribute("role", "button"); stack.setAttribute("tabindex", "0"); stack.setAttribute("aria-label", "Draw a card");
+  stack.addEventListener("click", function () { draw(); });
+  stack.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); draw(); } });
+  var lastC = -1, lastW = -1, nextC = pick(CARDS.length, -1), busy = false;
+  function pick(n, avoid) { var i; do { i = Math.floor(Math.random() * n); } while (n > 1 && i === avoid); return i; }
+  function src(i) { return "assets/draw/" + CARDS[i][0] + ".jpg"; }
+  function preload(i) { var p = new Image(); p.src = src(i); }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, reduce ? 0 : ms); }); }
+  function draw() {
+    if (busy) return; busy = true;
+    var c = nextC, w = pick(WORDS.length, lastW), card = CARDS[c], first = result.hidden;
+    lastC = c; lastW = w; nextC = pick(CARDS.length, c);
+    flip.classList.remove("is-up"); result.classList.remove("is-up");
+    (first ? Promise.resolve() : wait(450)).then(function () {
+      deck.hidden = true; result.hidden = false; root.classList.add("is-drawn");
+      $("[data-asked]").textContent = qEl.textContent;
+      var q2 = $("[data-q2]"); q2.textContent = qEl.textContent; q2.className = qEl.className;
+      img.src = src(c);
+      img.alt = "Watercolour card: " + card[1] + ".";
+      var wd = $("[data-word]"); wd.textContent = WORDS[w]; wd.className = "kw-word" + (WORDS[w].length > 10 ? " long" : WORDS[w].length > 7 ? " mid" : "");
+      $("[data-look]").innerHTML = card[2].map(function (t) { return "<li>" + t + "</li>"; }).join("");
+      $("[data-starter]").textContent = card[3].replace(/\.\.\.$/, "\u2026");
+      $("[data-status]").textContent = "You drew a card showing " + card[1] + ". Today's word: " + WORDS[w] + ".";
+      var g = $(".r-guide"); g.classList.remove("guide-in"); void g.offsetWidth; g.classList.add("guide-in");
+      return (img.decode ? img.decode() : Promise.resolve()).catch(function () {});
+    }).then(function () { return wait(60); }).then(function () {
+      flip.classList.add("is-up"); result.classList.add("is-up");
+      var top = result.getBoundingClientRect().top; if (top < 0 || (first && top > window.innerHeight * .6)) { result.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
+      preload(nextC); busy = false;
+    });
+  }
+  Array.prototype.forEach.call(root.querySelectorAll("[data-draw]"), function (b) { b.addEventListener("click", draw); });
+  $("[data-swap]").addEventListener("click", swap);
+  preload(nextC);
+  if (location.hash === "#try") draw();
+})();
+</script>
 </body>
 </html>
