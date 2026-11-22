@@ -3,282 +3,749 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HiDae — Cards that mirror you, not your future</title>
-<meta name="description" content="HiDae is a reflection card app. Draw an image card, reveal a word card, and answer gentle questions that help you reconnect with yourself.">
-<meta property="og:title" content="HiDae — Stop waiting for fate. Reclaim your life.">
-<meta property="og:description" content="The cards don't tell the future. They mirror what's hidden inside you.">
+<title>HiDae: cards that mirror you, not your future</title>
+<meta name="description" content="HiDae is a reflection card app. Draw a watercolour card, reveal a word, and talk it through with Aria, the companion you name. Not fortune-telling. Free to start.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="canonical" href="https://kai-ilki.github.io/HiDae-Site/">
+<link rel="icon" type="image/png" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="HiDae">
+<meta property="og:url" content="https://kai-ilki.github.io/HiDae-Site/">
+<meta property="og:title" content="HiDae: Stop waiting for fate. Reclaim your life.">
+<meta property="og:description" content="The cards don't tell the future. They mirror what's hidden inside you. A reflection card app, free to start.">
+<meta property="og:image" content="https://kai-ilki.github.io/HiDae-Site/assets/icon.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The HiDae app icon: a warm watercolour droplet.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HiDae: Stop waiting for fate. Reclaim your life.">
+<meta name="twitter:description" content="The cards don't tell the future. They mirror what's hidden inside you.">
+<meta name="twitter:image" content="https://kai-ilki.github.io/HiDae-Site/assets/icon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* HiDae v3 tokens ("gold on white"), mirrored from the app's components/ui/tokens.ts */
   :root {
-    --bg: #f7f3ee;
-    --ink: #2b2433;
-    --muted: #6d6475;
-    --accent: #7a5c9e;
-    --accent-soft: #e9e1f2;
-    --card: #ffffff;
-    --line: #e4ddd5;
-    --radius: 18px;
+    color-scheme: light;
+    --ground: #FFFFFF;
+    --sunken: #F6F4F0;
+    --paper: #F6F1E9;
+    --line: #EDE8DF;
+    --ink: #0E0E0E;
+    --ink-2: #5B5B5B;
+    --ink-3: #8B8B8B;
+    --ink-disabled: #B4B4B4;
+    --gold: #F49E0D;
+    --gold-pressed: #DB8B06;
+    --gold-text: #D39914;
+    --gold-tint: #FEF5E6;
+    --bubble-user: #F7CD85;
+    --on-accent: #FFFFFF;
+
+    --r-chip: 8px; --r-image: 12px; --r-row: 18px; --r-content: 22px; --r-full: 999px;
+    --side: 24px;
+
+    --sh-subtle: 0 1px 3px rgba(0,0,0,.04);
+    --sh-card: 0 6px 16px rgba(0,0,0,.06);
+    --sh-float: 0 8px 24px rgba(0,0,0,.10);
+    --sh-gold: 0 8px 18px rgba(244,158,13,.28);
+
+    --display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --ui: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
+    font-family: var(--ui);
+    font-size: 16px;
     line-height: 1.6;
+    background: var(--ground);
+    color: var(--ink);
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
-  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.15; }
+  img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.1; text-wrap: balance; color: var(--ink); }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 
-  /* Nav */
-  nav { padding: 22px 0; }
-  nav .wrap { display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
-  .logo span { color: var(--accent); }
-  .nav-cta { font-size: 0.95rem; font-weight: 500; text-decoration: none; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--ink); }
-  .nav-cta:hover { background: var(--ink); color: var(--bg); }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 var(--side); }
+  .eyebrow {
+    font-family: var(--ui); font-weight: 700; font-size: 12px; line-height: 1.2;
+    letter-spacing: .19em; text-transform: uppercase; color: var(--gold-text);
+  }
+  .lead { font-size: 1.125rem; line-height: 1.6; color: var(--ink-2); }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--ground); padding: 8px 12px; }
 
-  /* Hero */
-  .hero { padding: 56px 0 88px; }
-  .hero .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
-  .eyebrow { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 6px 14px; border-radius: 999px; margin-bottom: 22px; }
-  .hero h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); letter-spacing: -0.02em; margin-bottom: 20px; }
-  .hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 30em; margin-bottom: 34px; }
+  /* ---------- Nav ---------- */
+  .top { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.92); backdrop-filter: saturate(1.2) blur(10px); -webkit-backdrop-filter: saturate(1.2) blur(10px); border-bottom: 1px solid transparent; }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; }
+  .wordmark { font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1; letter-spacing: -.01em; color: var(--ink); }
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 44px; padding: 0 20px; border-radius: var(--r-full);
+    font: 700 15px/1 var(--ui); text-decoration: none;
+    background: var(--gold); color: var(--on-accent); box-shadow: var(--sh-gold);
+    transition: background-color .15s ease;
+  }
+  .pill:hover { background: var(--gold-pressed); }
+
+  /* ---------- Store buttons ---------- */
   .stores { display: flex; flex-wrap: wrap; gap: 12px; }
-  .store-btn {
+  .store {
     display: inline-flex; align-items: center; gap: 10px;
-    background: var(--ink); color: #fff; text-decoration: none;
-    padding: 12px 22px; border-radius: 12px; font-weight: 500;
-    transition: transform .15s ease;
+    height: 54px; padding: 0 20px 0 16px; border-radius: 14px;
+    background: var(--ink); color: #FFFFFF; text-decoration: none;
+    transition: transform .15s ease, background-color .15s ease;
   }
-  .store-btn:hover { transform: translateY(-2px); }
-  .store-btn small { display: block; font-size: 0.7rem; opacity: .75; font-weight: 400; line-height: 1.1; }
-  .store-btn strong { display: block; font-size: 1.05rem; line-height: 1.2; }
-  .store-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
-  .trial-note { margin-top: 14px; font-size: 0.9rem; color: var(--muted); }
+  .store:hover { background: #262626; transform: translateY(-1px); }
+  .store svg { width: 24px; height: 24px; fill: #FFFFFF; flex-shrink: 0; }
+  .store span { display: flex; flex-direction: column; }
+  .store small { font-size: 11px; line-height: 1.1; color: #D9D9D9; font-weight: 500; }
+  .store strong { font-size: 17px; line-height: 1.2; font-weight: 600; letter-spacing: -.005em; }
+  .fine { margin-top: 14px; font-size: 14px; color: var(--ink-3); }
+  .fine b { color: var(--ink-2); font-weight: 600; }
 
-  /* Card illustration */
-  .cards { position: relative; height: 380px; }
-  .c {
-    position: absolute; border-radius: var(--radius);
-    box-shadow: 0 18px 40px rgba(43,36,51,.14);
+  /* ---------- Art card (app "ArtCard": white frame, 8px pad, r18 / r12) ---------- */
+  .art {
+    background: var(--ground); padding: 8px; border: 1px solid var(--line);
+    border-radius: var(--r-row); box-shadow: var(--sh-card);
   }
-  .c-image {
-    width: 210px; height: 300px; left: 8%; top: 30px; transform: rotate(-7deg);
-    background:
-      radial-gradient(circle at 70% 28%, #f6d9a8 0 26px, transparent 27px),
-      linear-gradient(180deg, #b7a3d6 0%, #d9c6e6 52%, #8fb3a8 52%, #6f9a8c 100%);
-    border: 10px solid #fff;
-    animation: floatA 6s ease-in-out infinite;
+  .art img { width: 100%; aspect-ratio: 542 / 720; object-fit: cover; border-radius: var(--r-image); background: var(--paper); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 32px 0 72px; }
+  .hero .wrap { display: grid; gap: 40px; }
+  .hero h1 { font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: 1.04; letter-spacing: -.02em; margin: 16px 0 20px; }
+  .hero h1 em { display: block; font-style: italic; font-weight: 400; color: var(--gold-text); }
+  .hero .lead { max-width: 30em; margin-bottom: 28px; }
+
+  .spread { position: relative; aspect-ratio: 1 / 1; max-width: 480px; width: 100%; margin: 0 auto; }
+  .spread .art { position: absolute; width: 43%; }
+  .spread .a1 { left: 1%; top: 11%; transform: rotate(-8deg); }
+  .spread .a2 { left: 25.5%; top: 0; width: 49%; z-index: 2; }
+  .spread .a3 { right: 1%; top: 11%; transform: rotate(8deg); }
+  .kw {
+    background: var(--paper); border-radius: var(--r-content); padding: 16px 20px 18px; text-align: center;
   }
-  .c-image::after {
-    content: ""; position: absolute; left: 50%; bottom: 34%; width: 14px; height: 40px;
-    background: #2b2433; border-radius: 7px 7px 2px 2px; transform: translateX(-50%); opacity: .8;
+  .kw .eyebrow { font-size: 11px; }
+  .kw-word { display: block; margin-top: 8px; font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.2; letter-spacing: 2.2px; text-transform: uppercase; color: var(--ink); }
+  .spread .kw { position: absolute; z-index: 3; left: 50%; bottom: 2%; transform: translateX(-50%); width: 62%; max-width: 240px; box-shadow: var(--sh-float); border: 1px solid var(--line); }
+  .spread .daemon { position: absolute; z-index: 4; right: 2%; bottom: 10%; width: 22%; height: auto; }
+  .float { animation: float 7s ease-in-out infinite; }
+  @keyframes float { 50% { translate: 0 -8px; } }
+
+  /* ---------- Section scaffolding ---------- */
+  section { padding: 72px 0; }
+  .head { max-width: 640px; margin-bottom: 40px; }
+  .head h2 { font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -.015em; margin: 12px 0 14px; }
+  .head p:not(.eyebrow) { color: var(--ink-2); font-size: 1.0625rem; }
+  .rule { border: 0; border-top: 1px solid var(--line); }
+
+  /* ---------- Phone frame ----------
+     The screen is laid out at the app's real size (390pt wide) and scaled with `zoom`,
+     so every measurement inside matches tokens.ts. */
+  .phone-slot { display: flex; justify-content: center; }
+  .phone {
+    zoom: .74;
+    width: 414px; padding: 12px; border-radius: 60px;
+    background: #0E0E0E; box-shadow: 0 30px 60px rgba(14,14,14,.16), 0 0 0 1px #2A2A2A inset;
+    flex-shrink: 0;
   }
-  .c-word {
-    width: 190px; height: 120px; right: 6%; top: 210px; transform: rotate(5deg);
-    background: var(--card); display: flex; align-items: center; justify-content: center;
-    font-family: "Fraunces", serif; font-size: 1.7rem; color: var(--accent);
+  .screen {
+    position: relative; width: 390px; height: 844px; overflow: hidden;
+    border-radius: 48px; background: var(--ground); color: var(--ink);
+    font-family: var(--ui); font-size: 15px; line-height: 23px; text-align: left;
+  }
+  .status { height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 6px 34px 0 46px; font: 600 16px/1 var(--ui); }
+  .status .island { position: absolute; left: 50%; top: 11px; transform: translateX(-50%); width: 122px; height: 35px; border-radius: 20px; background: #0E0E0E; }
+  .status svg { height: 12px; width: auto; }
+  .status .sys { display: flex; gap: 6px; align-items: center; }
+  .scr { padding: 0 24px; }
+  .s-eyebrow { font: 700 11px/13px var(--ui); letter-spacing: 2.1px; text-transform: uppercase; color: var(--ink-3); }
+  .s-eyebrow.g { color: var(--gold-text); }
+  .s-title { font: 600 28px/34px var(--display); color: var(--ink); }
+  .s-body { font: 400 15px/23px var(--ui); }
+  .s-chip { display: inline-block; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--ground); font: 400 13px/19.5px var(--ui); color: var(--ink-2); }
+  .s-chip.on { background: var(--gold-tint); border-color: var(--gold); color: var(--gold-text); }
+  .s-btn { height: 52px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font: 700 15px/18px var(--ui); }
+  .s-btn.primary { background: var(--gold); color: var(--on-accent); box-shadow: var(--sh-gold); }
+  .s-btn.secondary { background: var(--ground); color: var(--ink); border: 1px solid var(--line); }
+  .s-art { background: var(--ground); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--sh-card); }
+  .s-art img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 12px; background: var(--paper); }
+
+  /* Explore */
+  .appbar { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+  .appbar .wm { font: 700 26px/32px var(--display); }
+  .appbar .acts { display: flex; align-items: center; gap: 20px; color: var(--ink-3); }
+  .appbar svg { width: 24px; height: 24px; }
+  .greet { display: flex; align-items: center; gap: 16px; margin: 8px 0 32px; }
+  .greet img { width: 88px; height: 88px; flex-shrink: 0; }
+  .greet b { display: block; font: 600 22px/28px var(--display); }
+  .greet span { display: block; margin-top: 4px; font: 400 16px/25px var(--ui); color: var(--ink-2); }
+  .cats { display: flex; gap: 16px; margin: 0 -24px; padding: 0 24px 12px; overflow: hidden; }
+  .cat { flex: 0 0 140px; padding: 8px; border-radius: 18px; border: 1px solid var(--line); background: var(--ground); box-shadow: var(--sh-card); position: relative; }
+  .cat.on { border: 1.5px solid var(--gold); }
+  .cat img { width: 124px; height: 155px; object-fit: cover; border-radius: 12px; background: var(--paper); }
+  .cat.locked img { opacity: .35; }
+  .cat .lock { position: absolute; left: 8px; right: 8px; top: 8px; height: 155px; display: flex; align-items: center; justify-content: center; color: var(--ink-2); }
+  .cat .lock svg { width: 22px; height: 22px; }
+  .cat p { text-align: center; margin: 12px 0; font: 400 16px/25px var(--ui); }
+  .cat.locked p { color: var(--ink-3); }
+  .qcard { margin-top: 24px; padding: 24px; border-radius: 22px; border: 1px solid var(--line); background: var(--ground); box-shadow: var(--sh-card); }
+  .qrow { display: flex; align-items: center; justify-content: space-between; }
+  .rand { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--line); color: var(--ink-2); }
+  .qcard h4 { margin-top: 16px; font: 600 20px/26px var(--display); }
+  .qtag { display: inline-block; margin-top: 16px; padding: 6px 12px; border-radius: 8px; background: var(--gold); }
+  .qtag .s-eyebrow { color: var(--on-accent); }
+  .qinput { margin-top: 8px; min-height: 120px; padding: 20px; border-radius: 18px; border: 1px solid var(--line); font: 400 16px/25px var(--ui); color: var(--ink); }
+  .viewport { position: absolute; left: 0; right: 0; top: 110px; bottom: 0; overflow: hidden; }
+  .viewport .scr { transform: translateY(-238px); }
+  .pinned { position: absolute; left: 24px; right: 24px; bottom: 112px; }
+  .switch { position: absolute; left: 50%; bottom: 38px; transform: translateX(-50%); display: flex; gap: 4px; padding: 6px; border-radius: 28px; background: var(--ground); border: 1px solid var(--line); box-shadow: var(--sh-float); }
+  .switch span { width: 64px; height: 48px; border-radius: 22px; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+  .switch span.on { background: var(--ink); color: var(--on-accent); }
+  .switch svg { width: 20px; height: 20px; }
+
+  /* Card flow */
+  .stitle { display: flex; align-items: center; gap: 16px; margin: 8px 0 24px; }
+  .stitle svg { width: 24px; height: 24px; }
+  .flow-art { width: 171px; margin: 16px auto 0; padding: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .btns { display: grid; gap: 12px; margin-top: 28px; }
+  .summary { margin-top: 16px; display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 22px; border: 1px solid var(--line); box-shadow: var(--sh-subtle); }
+  .summary .s-art { width: 52px; padding: 3px; flex-shrink: 0; }
+  .summary .s-art img { border-radius: 8px; }
+  .bubble { margin-top: 16px; padding: 14px 16px; border-radius: 18px; font: 400 15px/23px var(--ui); color: var(--ink); }
+  .bubble.ai { background: var(--sunken); max-width: 92%; }
+  .bubble.me { background: var(--gold-tint); border: 1px solid var(--bubble-user); max-width: 85%; margin-left: auto; padding: 12px 16px; }
+  .composer { margin-top: 24px; display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border: 1px solid var(--line); border-radius: 999px; }
+  .composer .well { width: 40px; height: 40px; border-radius: 20px; background: var(--sunken); display: flex; align-items: center; justify-content: center; color: var(--ink); }
+  .composer .well svg { width: 20px; height: 20px; }
+  .composer .ph { flex: 1; color: var(--ink-disabled); padding: 8px 0; }
+  .composer .send { color: var(--ink-disabled); }
+
+  /* ---------- How a reading goes ---------- */
+  .how { background: var(--ground); }
+  .row { display: grid; gap: 36px; align-items: center; padding: 40px 0; }
+  .row + .row { border-top: 1px solid var(--line); }
+  .row h3 { font-size: clamp(1.6rem, 4.6vw, 2.1rem); letter-spacing: -.01em; margin: 10px 0 12px; }
+  .row .copy > p:not(.eyebrow) { color: var(--ink-2); max-width: 30em; }
+  .steps { list-style: none; margin-top: 24px; display: grid; gap: 22px; }
+  .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 4px 12px; }
+  .steps .n { font: 600 15px/1 var(--display); color: var(--gold-text); padding-top: 4px; font-variant-numeric: lining-nums; }
+  .steps h4 { font: 700 16px/1.4 var(--ui); color: var(--ink); }
+  .steps p { grid-column: 2; color: var(--ink-2); font-size: 15px; }
+  .steps .demo { grid-column: 2; margin-top: 8px; }
+  .steps .chips { margin-top: 0; }
+  .steps .chip { display: inline-block; padding: 5px 12px; border-radius: var(--r-chip); border: 1px solid var(--line); font-size: 13px; color: var(--ink-2); background: var(--ground); }
+  .steps .chip.on { background: var(--gold-tint); border-color: var(--gold); color: var(--gold-text); }
+  .steps .kw { display: inline-block; padding: 12px 28px 14px; }
+  .steps .kw-word { font-size: 22px; margin-top: 6px; }
+  .starter { font-family: var(--display); font-style: italic; font-size: 17px; color: var(--ink); border-left: 2px solid var(--gold); padding-left: 14px; }
+  .cats-line { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { padding: 5px 12px; border-radius: var(--r-chip); border: 1px solid var(--line); font-size: 13px; color: var(--ink-2); }
+  .tag.on { background: var(--gold-tint); border-color: var(--gold); color: var(--gold-text); }
+
+  /* ---------- Deck ---------- */
+  .deck { background: var(--paper); }
+  .deck .head h2 em { font-style: italic; font-weight: 400; }
+  .deck-row {
+    display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin: 0 calc(var(--side) * -1); padding: 8px var(--side) 28px; scrollbar-width: none;
+  }
+  .deck-row::-webkit-scrollbar { display: none; }
+  .deck-row li { list-style: none; flex: 0 0 62%; max-width: 230px; scroll-snap-align: center; }
+  .deck-row .art { padding: 8px; }
+  .deck-note { display: flex; flex-wrap: wrap; gap: 8px 28px; color: var(--ink-2); font-size: 15px; }
+  .deck-note b { font-family: var(--display); font-size: 28px; font-weight: 600; color: var(--ink); margin-right: 6px; vertical-align: -3px; }
+
+  /* ---------- Mirror ---------- */
+  .mirror .wrap { display: grid; gap: 36px; }
+  .mirror h2 { font-size: clamp(2.2rem, 7vw, 3.4rem); letter-spacing: -.02em; margin: 12px 0 18px; }
+  .mirror h2 em { font-style: italic; font-weight: 400; color: var(--gold-text); }
+  .mirror .copy p:not(.eyebrow) { color: var(--ink-2); max-width: 28em; }
+  .vs { border: 1px solid var(--line); border-radius: var(--r-content); overflow: hidden; }
+  .vs-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .vs-row + .vs-row { border-top: 1px solid var(--line); }
+  .vs-row > div { padding: 16px 18px; font-size: 15px; line-height: 1.45; }
+  .vs-row > div + div { border-left: 1px solid var(--line); }
+  .vs-h > div { font: 700 11px/1.2 var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); background: var(--sunken); }
+  .vs-h > div + div { color: var(--gold-text); background: var(--gold-tint); }
+  .vs .old { color: var(--ink-3); text-decoration: line-through; text-decoration-color: rgba(139,139,139,.5); }
+  .vs .new { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Daemon ---------- */
+  .meet { background: var(--sunken); }
+  .meet .wrap { display: grid; gap: 32px; align-items: center; }
+  .meet-art { position: relative; display: flex; justify-content: center; }
+  .meet-art img { width: min(220px, 60vw); height: auto; }
+  .meet h2 { font-size: clamp(2.2rem, 7vw, 3.4rem); letter-spacing: -.02em; margin: 12px 0 16px; }
+  .meet .copy > p:not(.eyebrow) { color: var(--ink-2); max-width: 30em; }
+  .namecard { margin-top: 28px; max-width: 400px; background: var(--ground); border: 1px solid var(--line); border-radius: var(--r-content); padding: 20px; box-shadow: var(--sh-card); }
+  .namecard .eyebrow { color: var(--ink-3); font-size: 11px; }
+  .nameinput { margin-top: 10px; padding: 12px 16px; border-radius: var(--r-row); border: 1px solid var(--gold); font-family: var(--display); font-size: 22px; font-weight: 600; }
+  .namecard .chips { margin-top: 12px; }
+  .namecard .chip { padding: 6px 14px; border-radius: var(--r-chip); border: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
+  .meet-points { list-style: none; margin-top: 24px; display: grid; gap: 10px; color: var(--ink-2); font-size: 15px; }
+  .meet-points li { padding-left: 22px; position: relative; }
+  .meet-points li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+
+  .greetband { margin-top: 28px; display: flex; align-items: center; gap: 14px; max-width: 400px; padding: 14px 18px 14px 14px; border-radius: var(--r-row); background: var(--ground); border: 1px solid var(--line); }
+  .greetband img { width: 56px; height: 56px; flex-shrink: 0; }
+  .greetband b { display: block; font: 600 19px/1.2 var(--display); color: var(--ink); }
+  .greetband span { display: block; margin-top: 2px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+
+  /* ---------- Privacy ---------- */
+  .privacy .wrap { display: grid; gap: 32px; align-items: center; }
+  .privacy h2 { font-size: clamp(1.9rem, 5.6vw, 2.75rem); letter-spacing: -.015em; margin: 12px 0 14px; }
+  .privacy .copy p:not(.eyebrow) { color: var(--ink-2); max-width: 30em; }
+  .privacy .copy p:not(.eyebrow) + p { margin-top: 12px; }
+  .lock {
+    border-radius: 28px; padding: 28px 16px 22px; max-width: 420px; width: 100%;
+    background: linear-gradient(160deg, #F6F1E9 0%, #FEF5E6 55%, #F7CD85 140%);
     border: 1px solid var(--line);
-    animation: floatB 7s ease-in-out infinite;
   }
-  .c-back {
-    width: 170px; height: 245px; right: 14%; top: 0; transform: rotate(9deg);
-    background: repeating-linear-gradient(45deg, #7a5c9e 0 10px, #8a6dae 10px 20px);
-    border: 8px solid #fff; opacity: .9;
+  .lock-time { text-align: center; font: 600 56px/1 var(--ui); letter-spacing: -.02em; color: var(--ink); }
+  .lock-date { text-align: center; font-size: 14px; color: var(--ink-2); margin-top: 6px; margin-bottom: 22px; }
+  .notif { display: grid; grid-template-columns: 38px 1fr; gap: 10px; padding: 12px 14px; border-radius: 20px; background: rgba(255,255,255,.86); box-shadow: var(--sh-card); }
+  .notif img { width: 38px; height: 38px; border-radius: 9px; }
+  .notif-top { display: flex; justify-content: space-between; font-size: 13px; }
+  .notif-top b { font-weight: 700; color: var(--ink); }
+  .notif-top span { color: var(--ink-3); }
+  .notif p { font-size: 14px; line-height: 1.4; color: var(--ink); margin-top: 2px; }
+
+  /* ---------- Final CTA ---------- */
+  .final { padding: 88px 0 96px; }
+  .final .card {
+    border-radius: 28px; background: var(--gold-tint); border: 1px solid #F8E3BF;
+    padding: 40px 24px; display: grid; gap: 28px; align-items: center; overflow: hidden; position: relative;
   }
-  @keyframes floatA { 50% { transform: rotate(-7deg) translateY(-10px); } }
-  @keyframes floatB { 50% { transform: rotate(5deg) translateY(8px); } }
+  .final h2 { font-size: clamp(2.1rem, 6.6vw, 3.4rem); letter-spacing: -.02em; margin: 12px 0 14px; }
+  .final p:not(.eyebrow) { color: var(--ink-2); max-width: 30em; margin-bottom: 26px; }
+  .final .mini { display: flex; gap: 12px; justify-content: center; }
+  .final .mini .art { width: 34%; max-width: 150px; }
+  .final .mini .art:nth-child(1) { transform: rotate(-6deg) translateY(10px); }
+  .final .mini .art:nth-child(3) { transform: rotate(6deg) translateY(10px); }
 
-  /* Sections */
-  section { padding: 88px 0; }
-  .section-title { text-align: center; max-width: 640px; margin: 0 auto 56px; }
-  .section-title h2 { font-size: clamp(1.9rem, 3.5vw, 2.6rem); margin-bottom: 14px; }
-  .section-title p { color: var(--muted); font-size: 1.08rem; }
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; font-size: 14px; color: var(--ink-3); }
+  footer .wrap { display: grid; gap: 28px; }
+  .foot-cols { display: flex; flex-wrap: wrap; gap: 28px 56px; }
+  .foot-cols h3 { font: 700 11px/1.2 var(--ui); letter-spacing: .19em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .foot-cols ul { list-style: none; display: grid; gap: 8px; }
+  .foot-cols a { text-decoration: none; color: var(--ink-2); }
+  .foot-cols a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .foot-note { max-width: 40em; }
 
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .step { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; }
-  .step .num { font-family: "Fraunces", serif; font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 18px; }
-  .step h3 { font-size: 1.3rem; margin-bottom: 10px; }
-  .step p { color: var(--muted); }
-
-  .contrast { background: var(--ink); color: #f7f3ee; border-radius: 28px; padding: 72px 56px; }
-  .contrast .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .contrast h2 { font-size: clamp(1.9rem, 3.5vw, 2.5rem); margin-bottom: 18px; }
-  .contrast p { color: #cfc6d8; font-size: 1.05rem; }
-  .vs { display: grid; gap: 14px; }
-  .vs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .vs-cell { padding: 16px 18px; border-radius: 12px; font-size: 0.97rem; }
-  .vs-cell.old { background: rgba(255,255,255,.06); color: #a99fb3; text-decoration: line-through; text-decoration-color: rgba(255,255,255,.3); }
-  .vs-cell.new { background: rgba(122,92,158,.35); color: #fff; }
-  .vs-head { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .08em; color: #a99fb3; }
-
-  .who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .who div { padding: 28px; border-radius: var(--radius); background: var(--accent-soft); }
-  .who h3 { font-size: 1.15rem; margin-bottom: 8px; }
-  .who p { color: var(--muted); font-size: 0.98rem; }
-
-  .final { text-align: center; padding: 96px 0 104px; }
-  .final h2 { font-size: clamp(2rem, 4vw, 2.9rem); margin-bottom: 16px; }
-  .final p { color: var(--muted); font-size: 1.1rem; margin-bottom: 34px; }
-  .final .stores { justify-content: center; }
-
-  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; font-size: 0.92rem; color: var(--muted); }
-  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; align-items: center; }
-  footer nav { padding: 0; display: flex; gap: 20px; flex-wrap: wrap; }
-  footer a { text-decoration: none; }
-  footer a:hover { color: var(--ink); }
-
-  @media (max-width: 860px) {
-    .hero .wrap, .contrast .grid { grid-template-columns: 1fr; }
-    .hero { padding-top: 24px; }
-    .cards { height: 340px; max-width: 380px; margin: 0 auto; width: 100%; }
-    .steps, .who { grid-template-columns: 1fr; }
-    .contrast { padding: 48px 26px; border-radius: 22px; }
-    section { padding: 64px 0; }
+  /* ---------- Wider screens ---------- */
+  @media (min-width: 720px) {
+    :root { --side: 40px; }
+    .phone { zoom: .8; }
+    .deck-row li { flex-basis: 200px; }
+    .final .card { padding: 56px; }
   }
+  @media (min-width: 960px) {
+    .hero { padding: 56px 0 96px; }
+    .hero .wrap { grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
+    .spread { max-width: 500px; }
+    section { padding: 112px 0; }
+    .head { margin-bottom: 56px; }
+    .row { grid-template-columns: 1fr 1fr; gap: 72px; padding: 56px 0; }
+    .row.flip .phone-slot { order: 2; }
+    .phone { zoom: .78; }
+    .deck-row { margin-right: calc((100vw - min(100vw, 1120px)) / -2 - var(--side)); margin-left: 0; padding: 8px var(--side) 56px 0; gap: 20px; scroll-snap-type: none; }
+    .deck-row li { flex: 0 0 220px; max-width: none; }
+    .deck-row li:nth-child(even) { transform: translateY(32px); }
+    .mirror .wrap { grid-template-columns: .9fr 1.1fr; gap: 72px; align-items: center; }
+    .meet .wrap { grid-template-columns: .9fr 1.1fr; gap: 72px; }
+    .meet-art img { width: 380px; }
+    .meet .wrap { align-items: center; }
+    .privacy .wrap { grid-template-columns: 1.1fr .9fr; gap: 72px; }
+    .privacy .lock { justify-self: end; }
+    .final .card { grid-template-columns: 1.15fr .85fr; padding: 64px 72px; }
+    footer .wrap { grid-template-columns: 1fr auto; align-items: start; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .c-image, .c-word { animation: none; }
+    html { scroll-behavior: auto; }
+    .float { animation: none; }
+    .store, .pill { transition: none; }
   }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<nav>
+<header class="top">
   <div class="wrap">
-    <a href="#" class="logo">Hi<span>Dae</span></a>
-    <a href="#download" class="nav-cta">Get the app</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="eyebrow">A reflection card app</span>
-      <h1>Stop waiting for fate.<br>Reclaim your life.</h1>
-      <p class="lead">The cards don't tell the future. They mirror what's hidden inside you. Draw a card, notice what you feel, and find your own answers.</p>
-      <div class="stores" id="download">
-        <!-- TODO: replace # with your App Store link -->
-        <a class="store-btn" href="#" aria-label="Download on the App Store">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
-          <span><small>Download on the</small><strong>App Store</strong></span>
-        </a>
-        <!-- TODO: replace # with your Google Play link (or delete this button) -->
-        <a class="store-btn" href="#" aria-label="Get it on Google Play">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
-          <span><small>Get it on</small><strong>Google Play</strong></span>
-        </a>
-      </div>
-      <p class="trial-note">Free to start · 7-day free trial of HiDae Pro</p>
-    </div>
-    <div class="cards" aria-hidden="true">
-      <div class="c c-back"></div>
-      <div class="c c-image"></div>
-      <div class="c c-word">Courage</div>
-    </div>
+    <a class="brand" href="#" aria-label="HiDae home">
+      <img src="assets/icon.png" alt="" width="32" height="32">
+      <span class="wordmark">HiDae</span>
+    </a>
+    <a class="pill" href="#download">Get the app</a>
   </div>
 </header>
 
-<section>
-  <div class="wrap">
-    <div class="section-title">
-      <h2>How HiDae works</h2>
-      <p>No fortune-telling, no right answers. Just a few quiet minutes with yourself.</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="num">01</div>
-        <h3>Draw an image card</h3>
-        <p>Look at the picture. What catches your eye first? What does it remind you of?</p>
-      </div>
-      <div class="step">
-        <div class="num">02</div>
-        <h3>Reveal a word card</h3>
-        <p>Pair the image with a word. Notice how the meaning shifts — and what that stirs in you.</p>
-      </div>
-      <div class="step">
-        <div class="num">03</div>
-        <h3>Reflect, guided</h3>
-        <p>Gentle follow-up questions help you put feelings into words, so you can see your situation more clearly.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<main id="main">
 
-<section>
-  <div class="wrap">
-    <div class="contrast">
-      <div class="grid">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">A reflection card app</p>
+        <h1 id="hero-title">Stop waiting for fate. <em>Reclaim your life.</em></h1>
+        <p class="lead">The cards don't tell the future. They mirror what's hidden inside you. Draw a watercolour card, find your word, and let Aria ask the questions that help you hear yourself.</p>
+        <div class="stores" id="download">
+          <a class="store" href="https://apps.apple.com/app/id6763971990" aria-label="Download HiDae on the App Store">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+            <span><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.hermittechllc.innerlight" aria-label="Get HiDae on Google Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
+            <span><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+        </div>
+        <p class="fine"><b>Free to start.</b> 7-day free trial of HiDae Pro.</p>
+      </div>
+
+      <div class="spread">
+        <div class="art a1"><img src="assets/cards/giant-keyhole.jpg" alt="Watercolour card: a giant keyhole in a night sky with light shining through." width="542" height="720"></div>
+        <div class="art a2"><img src="assets/cards/beautiful-butterfly.jpg" alt="Watercolour card: a golden butterfly emerging from its cocoon." width="542" height="720"></div>
+        <div class="art a3"><img src="assets/cards/cup-of-tea.jpg" alt="Watercolour card: a cup of tea steaming on a windowsill in afternoon light." width="542" height="720"></div>
+        <div class="kw" aria-label="Today's word: Freedom">
+          <span class="eyebrow">Today's word</span>
+          <span class="kw-word">Freedom</span>
+        </div>
+        <img class="daemon float" src="assets/daemon.png" alt="Aria, the warm watercolour droplet who guides your reading." width="360" height="360">
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- How a reading goes -->
+  <section class="how" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">How a reading goes</p>
+        <h2 id="how-title">A few quiet minutes. One card. Your own words.</h2>
+        <p>No spreads to memorise and no meanings to look up. You look, you feel, you write, and your Daemon helps you hear what you just said.</p>
+      </div>
+
+      <!-- Row 1: Explore -->
+      <div class="row">
+        <div class="phone-slot">
+          <div class="phone" role="img" aria-label="The HiDae Explore screen: the Guidance category is selected, the question reads 'A thought has been circling in my head for days.', and a gold Draw a card button sits at the bottom.">
+            <div class="screen" aria-hidden="true">
+              <div class="status"><span>9:41</span><span class="island"></span><span class="sys">
+                <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.5" fill="none" stroke="#0E0E0E" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2"/><rect x="25" y="4" width="1.6" height="4" rx=".8" opacity=".4"/></svg>
+              </span></div>
+              <div class="appbar">
+                <span class="wm">HiDae</span>
+                <span class="acts">
+                  <span class="s-body">EN</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="1.6" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+                </span>
+              </div>
+              <div class="viewport"><div class="scr">
+                <div class="greet">
+                  <img src="assets/daemon.png" alt="">
+                  <div><b>Aria</b><span>Here when you want to think something through.</span></div>
+                </div>
+                <p class="s-eyebrow">Reflection Guide</p>
+                <p class="s-title" style="margin:8px 0 20px">Explore</p>
+                <div class="cats">
+                  <div class="cat on"><img src="assets/categories/guidance.jpg" alt=""><p>Guidance</p></div>
+                  <div class="cat locked"><img src="assets/categories/love.jpg" alt=""><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><p>Love</p></div>
+                  <div class="cat locked"><img src="assets/categories/career.jpg" alt=""><span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><p>Career</p></div>
+                </div>
+                <div class="qcard">
+                  <div class="qrow"><span class="s-eyebrow">Take a deep breath</span><span class="rand s-body">Random</span></div>
+                  <h4>What's on your mind? (Optional)</h4>
+                  <span class="qtag"><span class="s-eyebrow">What's your question?</span></span>
+                  <div class="qinput">A thought has been circling in my head for days.</div>
+                </div>
+              </div></div>
+              <div class="pinned"><div class="s-btn primary">Draw a card</div></div>
+              <div class="switch">
+                <span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z" stroke-linejoin="round"/></svg></span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4.5h10.5a3 3 0 0 1 3 3v12H8a3 3 0 0 1-3-3z"/><path d="M5 16.5a3 3 0 0 1 3-3h10.5"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copy">
+          <p class="eyebrow">Begin</p>
+          <h3>Start with what's on your mind.</h3>
+          <p>Type a question, or tap Random and let the deck offer one. Choose an area of life to focus on, then draw. Guidance is open on the free plan; the trial opens the rest.</p>
+          <div class="cats-line" aria-label="Categories">
+            <span class="tag on">Guidance</span><span class="tag">Love</span><span class="tag">Career</span><span class="tag">Family</span><span class="tag">Body/Health</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Look / Feel / Word / Write -->
+      <div class="row flip">
+        <div class="phone-slot">
+          <div class="phone" role="img" aria-label="The card flow, step 1 of 5, Look: the butterfly card with the question 'What catches your eye first?' and four options. 'The empty cocoon' is selected.">
+            <div class="screen" aria-hidden="true">
+              <div class="status"><span>9:41</span><span class="island"></span><span class="sys">
+                <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.5" fill="none" stroke="#0E0E0E" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2"/><rect x="25" y="4" width="1.6" height="4" rx=".8" opacity=".4"/></svg>
+              </span></div>
+              <div class="scr">
+                <div class="stitle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                  <span class="s-title">Your Journal</span>
+                </div>
+                <p class="s-eyebrow">Step 1 of 5 · Look</p>
+                <div class="s-art flow-art"><img src="assets/cards/beautiful-butterfly.jpg" alt=""></div>
+                <p class="s-body" style="margin-top:24px">What catches your eye first?</p>
+                <div class="chips">
+                  <span class="s-chip">The open wings</span>
+                  <span class="s-chip on">The empty cocoon</span>
+                  <span class="s-chip">The thin antennae</span>
+                  <span class="s-chip">The golden splashes</span>
+                  <span class="s-chip">Write my own</span>
+                </div>
+                <div class="btns">
+                  <div class="s-btn primary">Next</div>
+                  <div class="s-btn secondary">Skip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copy">
+          <p class="eyebrow">The card</p>
+          <h3>Look, feel, and find the word.</h3>
+          <p>Every card walks you through the same gentle steps. Each one can be skipped.</p>
+          <ol class="steps">
+            <li>
+              <span class="n">01</span><h4>Look</h4>
+              <p>What catches your eye first? Pick a detail, or write your own.</p>
+            </li>
+            <li>
+              <span class="n">02</span><h4>Feel</h4>
+              <p>If you were this butterfly, how would you feel?</p>
+              <div class="demo chips" aria-label="Example feelings"><span class="chip">Fragile</span><span class="chip on">Free</span><span class="chip">Unsure</span><span class="chip">Proud</span></div>
+            </li>
+            <li>
+              <span class="n">03</span><h4>Word</h4>
+              <p>A word card turns over. Where do you see it in the picture? The two don't have to match.</p>
+              <div class="demo"><div class="kw"><span class="eyebrow">Today's word</span><span class="kw-word">Freedom</span></div></div>
+            </li>
+            <li>
+              <span class="n">04</span><h4>Write</h4>
+              <p>Where does this show up in your life right now? Start from a line written for this card:</p>
+              <p class="demo starter">The cocoon I'm leaving behind right now is&hellip;</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Row 3: Aria -->
+      <div class="row">
+        <div class="phone-slot">
+          <div class="phone" role="img" aria-label="Step 5 of 5, Aria: a short chat. Aria asks what saying yes used to keep safe; the reader answers 'Being liked, I think. And not having to choose.' Aria asks what they would like to choose first.">
+            <div class="screen" aria-hidden="true">
+              <div class="status"><span>9:41</span><span class="island"></span><span class="sys">
+                <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.5" fill="none" stroke="#0E0E0E" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2"/><rect x="25" y="4" width="1.6" height="4" rx=".8" opacity=".4"/></svg>
+              </span></div>
+              <div class="scr">
+                <div class="stitle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                  <span class="s-title">Your Journal</span>
+                </div>
+                <p class="s-eyebrow">Step 5 of 5 · Aria</p>
+                <div class="summary">
+                  <div class="s-art"><img src="assets/cards/beautiful-butterfly.jpg" alt=""></div>
+                  <p class="s-body" style="margin-top:2px">Today's word: Freedom</p>
+                </div>
+                <div class="bubble ai" style="margin-top:20px">You noticed the empty cocoon first, then wrote about leaving behind the version of you who always said yes. What did saying yes use to keep safe for you?</div>
+                <div class="bubble me">Being liked, I think. And not having to choose.</div>
+                <div class="bubble ai">That's a lot for one word to carry. Now that you're stepping out of it, what would you like to choose first?</div>
+                <div class="composer">
+                  <span class="well"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="3.5" width="12" height="17" rx="2.5"/><path d="M12 9.5v5M9.5 12h5"/></svg></span>
+                  <span class="ph">Write your thoughts…</span>
+                  <span class="send">Send</span>
+                </div>
+                <p class="s-body" style="text-align:center;margin-top:16px;color:#5B5B5B">Save and exit</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copy">
+          <p class="eyebrow">05 · Aria</p>
+          <h3>Aria reads, and asks.</h3>
+          <p>Your Daemon reads what you chose and what you wrote, then asks one question at a time. Answer if you like. Its reading comes last, and you can keep talking, or draw another card right inside the chat.</p>
+          <p style="margin-top:14px">It never tells you what will happen. It helps you notice what you already know.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deck -->
+  <section class="deck" aria-labelledby="deck-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">The deck</p>
+        <h2 id="deck-title">Hand-painted cards with <em>nothing to decode.</em></h2>
+        <p>Every image is a watercolour with room to wander. There is no meaning to look up: what you see in it is the point.</p>
+      </div>
+      <ul class="deck-row" aria-label="A selection of HiDae image cards">
+        <li><div class="art"><img src="assets/cards/beautiful-butterfly.jpg" alt="A golden butterfly emerging from its cocoon." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/cracked-ceramic.jpg" alt="A cracked ceramic bowl repaired with gold." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/giant-keyhole.jpg" alt="A giant keyhole in a night sky, light shining through." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/cup-of-tea.jpg" alt="A cup of tea steaming on a windowsill." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/single-figure.jpg" alt="A single figure standing alone." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/ornate-box.jpg" alt="An ornate golden box." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/brilliant-rainbow.jpg" alt="A rainbow across a green valley after rain." width="542" height="720" loading="lazy"></div></li>
+        <li><div class="art"><img src="assets/cards/childs-hand.jpg" alt="A child's hand planting a green sapling." width="542" height="720" loading="lazy"></div></li>
+      </ul>
+      <p class="deck-note"><span><b>130</b>image cards</span><span><b>88</b>word cards</span><span><b>1</b>question at a time</span></p>
+    </div>
+  </section>
+
+  <!-- Mirror -->
+  <section class="mirror" aria-labelledby="mirror-title">
+    <div class="wrap">
+      <div class="copy">
+        <p class="eyebrow">Not fortune-telling</p>
+        <h2 id="mirror-title">Not a tarot app. <em>A mirror.</em></h2>
+        <p>Fortune-telling asks you to wait for luck. HiDae asks what you see, what you feel, and what you want to do next. The answers were yours all along.</p>
+      </div>
+      <div class="vs" role="table" aria-label="Fortune-telling compared with HiDae">
+        <div class="vs-row vs-h" role="row"><div role="columnheader">Fortune-telling</div><div role="columnheader">HiDae</div></div>
+        <div class="vs-row" role="row"><div class="old" role="cell">The cards decide</div><div class="new" role="cell">You decide</div></div>
+        <div class="vs-row" role="row"><div class="old" role="cell">Predicts your future</div><div class="new" role="cell">Reflects your present</div></div>
+        <div class="vs-row" role="row"><div class="old" role="cell">Tells you what it means</div><div class="new" role="cell">Asks what it means to you</div></div>
+        <div class="vs-row" role="row"><div class="old" role="cell">Wait for luck</div><div class="new" role="cell">Take the next step</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Daemon -->
+  <section class="meet" id="daemon" aria-labelledby="meet-title">
+    <div class="wrap">
+      <div class="meet-art">
+        <img class="float" src="assets/daemon.png" alt="The Daemon: a warm amber watercolour droplet in a soft golden glow." width="360" height="360" loading="lazy">
+      </div>
+      <div class="copy">
+        <p class="eyebrow">Meet your Daemon</p>
+        <h2 id="meet-title">This is your Daemon. You give it a name.</h2>
+        <p>It won't tell you what things mean. It will help you find what they mean to you.</p>
+        <div class="namecard" aria-label="Naming your Daemon, as in the app">
+          <p class="eyebrow">Name your Daemon</p>
+          <div class="nameinput">Aria</div>
+          <div class="chips"><span class="chip">Sol</span><span class="chip">Wren</span><span class="chip">Ash</span><span class="chip">Surprise me</span></div>
+        </div>
+        <ul class="meet-points">
+          <li>Asks about what you wrote, one question at a time.</li>
+          <li>Keeps every question and answer on screen as you go.</li>
+          <li>Skip the naming and it's simply Aria.</li>
+        </ul>
+        <div class="greetband" aria-label="How your Daemon greets you on the Explore screen">
+          <img src="assets/daemon.png" alt="" width="56" height="56" loading="lazy">
+          <div><b>Aria</b><span>Here when you want to think something through.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="privacy" aria-labelledby="privacy-title">
+    <div class="wrap">
+      <div class="copy">
+        <p class="eyebrow">Private by design</p>
+        <h2 id="privacy-title">The reminder never shows what you write.</h2>
+        <p>Turn on a gentle daily nudge to draw a card, morning, afternoon or evening. Nothing from your journal appears on your lock screen.</p>
+        <p>Your records are private. We only use your information for sign-in and syncing. No marketing, no spam.</p>
+      </div>
+      <div class="lock" aria-label="Example of a HiDae daily reminder on a lock screen">
+        <p class="lock-time">8:00</p>
+        <p class="lock-date">Tuesday, October 14</p>
+        <div class="notif">
+          <img src="assets/icon.png" alt="" width="38" height="38">
+          <div>
+            <div class="notif-top"><b>HiDae</b><span>now</span></div>
+            <p>The world is noisy, but this place is quiet. Draw a card, and I'll stay with you for a while.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final" aria-labelledby="final-title">
+    <div class="wrap">
+      <div class="card">
         <div>
-          <h2>Not a tarot app.<br>A mirror.</h2>
-          <p>Fortune-telling asks you to wait for luck. HiDae asks what <em>you</em> see, what <em>you</em> feel, and what <em>you</em> want to do next. The answers were always yours.</p>
+          <p class="eyebrow">Free to start</p>
+          <h2 id="final-title">Your answers are already inside you.</h2>
+          <p>Cards are always free. A 7-day trial of HiDae Pro opens every category and every layout, plus 75 readings and 150 questions with your Daemon.</p>
+          <div class="stores">
+            <a class="store" href="https://apps.apple.com/app/id6763971990" aria-label="Download HiDae on the App Store">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.hermittechllc.innerlight" aria-label="Get HiDae on Google Play">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
+              <span><small>Get it on</small><strong>Google Play</strong></span>
+            </a>
+          </div>
         </div>
-        <div class="vs">
-          <div class="vs-row"><div class="vs-head">Fortune-telling</div><div class="vs-head">HiDae</div></div>
-          <div class="vs-row"><div class="vs-cell old">The cards decide</div><div class="vs-cell new">You decide</div></div>
-          <div class="vs-row"><div class="vs-cell old">Predicts your future</div><div class="vs-cell new">Reflects your present</div></div>
-          <div class="vs-row"><div class="vs-cell old">Wait for luck</div><div class="vs-cell new">Take the next step</div></div>
+        <div class="mini" aria-hidden="true">
+          <div class="art"><img src="assets/cards/ornate-box.jpg" alt="" loading="lazy"></div>
+          <div class="art"><img src="assets/cards/childs-hand.jpg" alt="" loading="lazy"></div>
+          <div class="art"><img src="assets/cards/brilliant-rainbow.jpg" alt="" loading="lazy"></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-title">
-      <h2>For when your mind feels crowded</h2>
-      <p>HiDae is for anyone who wants a softer way to understand what's going on inside.</p>
-    </div>
-    <div class="who">
-      <div>
-        <h3>Feeling stuck</h3>
-        <p>When you can't name what's bothering you, a picture can say it first.</p>
-      </div>
-      <div>
-        <h3>Facing a decision</h3>
-        <p>See which option your heart leans toward before your head talks you out of it.</p>
-      </div>
-      <div>
-        <h3>Want to know yourself better</h3>
-        <p>A few minutes a day to check in, notice patterns, and grow.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="final">
-  <div class="wrap">
-    <h2>Your answers are already inside you.</h2>
-    <p>Draw your first card today.</p>
-    <div class="stores">
-      <!-- TODO: same links as above -->
-      <a class="store-btn" href="#"><span><small>Download on the</small><strong>App Store</strong></span></a>
-      <a class="store-btn" href="#"><span><small>Get it on</small><strong>Google Play</strong></span></a>
-    </div>
-  </div>
-</div>
+  </section>
+</main>
 
 <footer>
   <div class="wrap">
-    <span>© 2026 HiDae</span>
-    <nav>
-      <a href="https://powerful-fowl-780.notion.site/Privacy-Policy-35400487651a80a09e2ae4b8df9b8f0e" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="https://powerful-fowl-780.notion.site/Support-36a00487651a8038901adeb277475c4b" target="_blank" rel="noopener">Support</a>
-      <!-- TODO: replace with your support email -->
-      <a href="mailto:hello@example.com">Contact</a>
-      <!-- TODO: replace with your social handles -->
-      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.threads.net/" target="_blank" rel="noopener">Threads</a>
-      <a href="https://www.tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+    <div>
+      <a class="brand" href="#" aria-label="HiDae home"><img src="assets/icon.png" alt="" width="32" height="32"><span class="wordmark">HiDae</span></a>
+      <p class="foot-note" style="margin-top:14px">A reflection card app. HiDae is a tool for self-reflection. It is not fortune-telling, and it is not therapy or medical advice.</p>
+      <p style="margin-top:10px">&copy; 2026 HiDae</p>
+    </div>
+    <nav class="foot-cols" aria-label="Footer">
+      <div>
+        <h3>App</h3>
+        <ul>
+          <li><a href="https://apps.apple.com/app/id6763971990">App Store</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.hermittechllc.innerlight">Google Play</a></li>
+          <li><a href="https://powerful-fowl-780.notion.site/Privacy-Policy-35400487651a80a09e2ae4b8df9b8f0e" target="_blank" rel="noopener">Privacy Policy</a></li>
+          <li><a href="https://powerful-fowl-780.notion.site/Support-36a00487651a8038901adeb277475c4b" target="_blank" rel="noopener">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <ul>
+          <li><a href="https://www.instagram.com/hidae.app/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@hidae.app" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://www.threads.com/@hidae.app" target="_blank" rel="noopener">Threads</a></li>
+        </ul>
+      </div>
     </nav>
   </div>
 </footer>
-
 </body>
 </html>

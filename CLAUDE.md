@@ -5,7 +5,7 @@
 ## 這個 repo 是什麼
 - HiDae（內部代號 InnerLight）的官網 landing page。HiDae 是一個心理投射卡 app：抽圖卡 → 翻字卡 → 用引導問題自我反思。強調「不是占卜」。
 - 單一檔案 `index.html`（純 HTML/CSS，沒有 build step），英文，目標用戶是歐美。
-- 以 GitHub Pages 從 `main` 分支根目錄發佈：https://kai-ilki.github.io/hidae-site/
+- 以 GitHub Pages 從 `main` 分支根目錄發佈：https://kai-ilki.github.io/HiDae-Site/（大小寫有分，小寫版本會 404）
 - App 本體在另一個 repo，網站刻意獨立放在這裡。
 
 ## Commit 規則
@@ -13,10 +13,11 @@
 - 不要用 `kai@users.noreply.github.com`，那是別人的帳號（曾經因此掛錯 contributor）。
 
 ## 網站待辦
-- [ ] 填入 App Store / Google Play 下載連結（在 `index.html` 搜尋 `TODO`）
-- [ ] 填入聯絡 email 和各社群帳號連結（footer）
+- [x] 填入 App Store / Google Play 下載連結
+- [x] 填入各社群帳號連結（footer：Instagram、TikTok、Threads）
+- [ ] 聯絡 email（目前未知，footer 已拿掉 mailto；有了再補）
 - [x] Privacy Policy / Support 連結已填（Kai 現有的 Notion 頁面）
-- [ ] 之後可考慮換成真的 app 截圖（向 Kai 索取）
+- [ ] 之後可考慮換成真的 app 截圖（目前是依 app 程式碼用 HTML/CSS 畫的手機畫面）
 - [ ] 自訂網域（選用，約 US$10–20/年）
 
 ## 下一個任務：社群帳號設定 + 自動發文
