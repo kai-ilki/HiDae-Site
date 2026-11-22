@@ -546,16 +546,6 @@
           </div>
           <div class="r-cta">
             <p class="r-line">Aria is waiting to ask the next question.</p>
-            <div class="stores">
-              <a class="store" href="https://apps.apple.com/app/id6763971990?ct=web-draw" aria-label="Download HiDae on the App Store">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
-                <span><small>Download on the</small><strong>App Store</strong></span>
-              </a>
-              <a class="store" href="https://play.google.com/store/apps/details?id=com.hermittechllc.innerlight&amp;referrer=utm_source%3Dwebsite%26utm_campaign%3Dweb-draw" aria-label="Get HiDae on Google Play">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
-                <span><small>Get it on</small><strong>Google Play</strong></span>
-              </a>
-            </div>
             <button class="again" type="button" data-draw>
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg>
               Draw again
@@ -930,7 +920,6 @@
   Array.prototype.forEach.call(root.querySelectorAll("[data-draw]"), function (b) { b.addEventListener("click", draw); });
   $("[data-swap]").addEventListener("click", swap);
   preload(nextC);
-  if (location.hash === "#try") draw();
 })();
 </script>
 </body>
