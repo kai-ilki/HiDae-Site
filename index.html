@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HiDae — Cards that mirror you, not your future</title>
+<meta name="description" content="HiDae is a reflection card app. Draw an image card, reveal a word card, and answer gentle questions that help you reconnect with yourself.">
+<meta property="og:title" content="HiDae — Stop waiting for fate. Reclaim your life.">
+<meta property="og:description" content="The cards don't tell the future. They mirror what's hidden inside you.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ee;
+    --ink: #2b2433;
+    --muted: #6d6475;
+    --accent: #7a5c9e;
+    --accent-soft: #e9e1f2;
+    --card: #ffffff;
+    --line: #e4ddd5;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.15; }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav { padding: 22px 0; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: "Fraunces", serif; font-size: 1.5rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
+  .logo span { color: var(--accent); }
+  .nav-cta { font-size: 0.95rem; font-weight: 500; text-decoration: none; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--ink); }
+  .nav-cta:hover { background: var(--ink); color: var(--bg); }
+
+  /* Hero */
+  .hero { padding: 56px 0 88px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+  .eyebrow { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 6px 14px; border-radius: 999px; margin-bottom: 22px; }
+  .hero h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); letter-spacing: -0.02em; margin-bottom: 20px; }
+  .hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 30em; margin-bottom: 34px; }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .store-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: #fff; text-decoration: none;
+    padding: 12px 22px; border-radius: 12px; font-weight: 500;
+    transition: transform .15s ease;
+  }
+  .store-btn:hover { transform: translateY(-2px); }
+  .store-btn small { display: block; font-size: 0.7rem; opacity: .75; font-weight: 400; line-height: 1.1; }
+  .store-btn strong { display: block; font-size: 1.05rem; line-height: 1.2; }
+  .store-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+  .trial-note { margin-top: 14px; font-size: 0.9rem; color: var(--muted); }
+
+  /* Card illustration */
+  .cards { position: relative; height: 380px; }
+  .c {
+    position: absolute; border-radius: var(--radius);
+    box-shadow: 0 18px 40px rgba(43,36,51,.14);
+  }
+  .c-image {
+    width: 210px; height: 300px; left: 8%; top: 30px; transform: rotate(-7deg);
+    background:
+      radial-gradient(circle at 70% 28%, #f6d9a8 0 26px, transparent 27px),
+      linear-gradient(180deg, #b7a3d6 0%, #d9c6e6 52%, #8fb3a8 52%, #6f9a8c 100%);
+    border: 10px solid #fff;
+    animation: floatA 6s ease-in-out infinite;
+  }
+  .c-image::after {
+    content: ""; position: absolute; left: 50%; bottom: 34%; width: 14px; height: 40px;
+    background: #2b2433; border-radius: 7px 7px 2px 2px; transform: translateX(-50%); opacity: .8;
+  }
+  .c-word {
+    width: 190px; height: 120px; right: 6%; top: 210px; transform: rotate(5deg);
+    background: var(--card); display: flex; align-items: center; justify-content: center;
+    font-family: "Fraunces", serif; font-size: 1.7rem; color: var(--accent);
+    border: 1px solid var(--line);
+    animation: floatB 7s ease-in-out infinite;
+  }
+  .c-back {
+    width: 170px; height: 245px; right: 14%; top: 0; transform: rotate(9deg);
+    background: repeating-linear-gradient(45deg, #7a5c9e 0 10px, #8a6dae 10px 20px);
+    border: 8px solid #fff; opacity: .9;
+  }
+  @keyframes floatA { 50% { transform: rotate(-7deg) translateY(-10px); } }
+  @keyframes floatB { 50% { transform: rotate(5deg) translateY(8px); } }
+
+  /* Sections */
+  section { padding: 88px 0; }
+  .section-title { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .section-title h2 { font-size: clamp(1.9rem, 3.5vw, 2.6rem); margin-bottom: 14px; }
+  .section-title p { color: var(--muted); font-size: 1.08rem; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; }
+  .step .num { font-family: "Fraunces", serif; font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 18px; }
+  .step h3 { font-size: 1.3rem; margin-bottom: 10px; }
+  .step p { color: var(--muted); }
+
+  .contrast { background: var(--ink); color: #f7f3ee; border-radius: 28px; padding: 72px 56px; }
+  .contrast .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .contrast h2 { font-size: clamp(1.9rem, 3.5vw, 2.5rem); margin-bottom: 18px; }
+  .contrast p { color: #cfc6d8; font-size: 1.05rem; }
+  .vs { display: grid; gap: 14px; }
+  .vs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .vs-cell { padding: 16px 18px; border-radius: 12px; font-size: 0.97rem; }
+  .vs-cell.old { background: rgba(255,255,255,.06); color: #a99fb3; text-decoration: line-through; text-decoration-color: rgba(255,255,255,.3); }
+  .vs-cell.new { background: rgba(122,92,158,.35); color: #fff; }
+  .vs-head { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .08em; color: #a99fb3; }
+
+  .who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .who div { padding: 28px; border-radius: var(--radius); background: var(--accent-soft); }
+  .who h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .who p { color: var(--muted); font-size: 0.98rem; }
+
+  .final { text-align: center; padding: 96px 0 104px; }
+  .final h2 { font-size: clamp(2rem, 4vw, 2.9rem); margin-bottom: 16px; }
+  .final p { color: var(--muted); font-size: 1.1rem; margin-bottom: 34px; }
+  .final .stores { justify-content: center; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; font-size: 0.92rem; color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between; align-items: center; }
+  footer nav { padding: 0; display: flex; gap: 20px; flex-wrap: wrap; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  @media (max-width: 860px) {
+    .hero .wrap, .contrast .grid { grid-template-columns: 1fr; }
+    .hero { padding-top: 24px; }
+    .cards { height: 340px; max-width: 380px; margin: 0 auto; width: 100%; }
+    .steps, .who { grid-template-columns: 1fr; }
+    .contrast { padding: 48px 26px; border-radius: 22px; }
+    section { padding: 64px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .c-image, .c-word { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo">Hi<span>Dae</span></a>
+    <a href="#download" class="nav-cta">Get the app</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">A reflection card app</span>
+      <h1>Stop waiting for fate.<br>Reclaim your life.</h1>
+      <p class="lead">The cards don't tell the future. They mirror what's hidden inside you. Draw a card, notice what you feel, and find your own answers.</p>
+      <div class="stores" id="download">
+        <!-- TODO: replace # with your App Store link -->
+        <a class="store-btn" href="#" aria-label="Download on the App Store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.78.74 2.99.72 1.24-.02 2.02-1.12 2.77-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.96 2.8 1.02.08 2.06-.52 2.69-1.28z"/></svg>
+          <span><small>Download on the</small><strong>App Store</strong></span>
+        </a>
+        <!-- TODO: replace # with your Google Play link (or delete this button) -->
+        <a class="store-btn" href="#" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 2.3c-.23.25-.36.63-.36 1.12v17.16c0 .49.13.87.36 1.12l.06.05 9.62-9.62v-.23L3.66 2.25l-.06.05zm12.88 12.95-3.2-3.21v-.23l3.2-3.2.07.04 3.8 2.16c1.08.62 1.08 1.63 0 2.24l-3.8 2.16-.07.04zm-.07.04L13.13 12 3.6 21.7c.35.37.93.42 1.59.05l11.22-6.37M16.41 8.7 5.19 2.33c-.66-.37-1.24-.32-1.59.05L13.13 12l3.28-3.3z"/></svg>
+          <span><small>Get it on</small><strong>Google Play</strong></span>
+        </a>
+      </div>
+      <p class="trial-note">Free to start · 7-day free trial of HiDae Pro</p>
+    </div>
+    <div class="cards" aria-hidden="true">
+      <div class="c c-back"></div>
+      <div class="c c-image"></div>
+      <div class="c c-word">Courage</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-title">
+      <h2>How HiDae works</h2>
+      <p>No fortune-telling, no right answers. Just a few quiet minutes with yourself.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Draw an image card</h3>
+        <p>Look at the picture. What catches your eye first? What does it remind you of?</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Reveal a word card</h3>
+        <p>Pair the image with a word. Notice how the meaning shifts — and what that stirs in you.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Reflect, guided</h3>
+        <p>Gentle follow-up questions help you put feelings into words, so you can see your situation more clearly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="contrast">
+      <div class="grid">
+        <div>
+          <h2>Not a tarot app.<br>A mirror.</h2>
+          <p>Fortune-telling asks you to wait for luck. HiDae asks what <em>you</em> see, what <em>you</em> feel, and what <em>you</em> want to do next. The answers were always yours.</p>
+        </div>
+        <div class="vs">
+          <div class="vs-row"><div class="vs-head">Fortune-telling</div><div class="vs-head">HiDae</div></div>
+          <div class="vs-row"><div class="vs-cell old">The cards decide</div><div class="vs-cell new">You decide</div></div>
+          <div class="vs-row"><div class="vs-cell old">Predicts your future</div><div class="vs-cell new">Reflects your present</div></div>
+          <div class="vs-row"><div class="vs-cell old">Wait for luck</div><div class="vs-cell new">Take the next step</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-title">
+      <h2>For when your mind feels crowded</h2>
+      <p>HiDae is for anyone who wants a softer way to understand what's going on inside.</p>
+    </div>
+    <div class="who">
+      <div>
+        <h3>Feeling stuck</h3>
+        <p>When you can't name what's bothering you, a picture can say it first.</p>
+      </div>
+      <div>
+        <h3>Facing a decision</h3>
+        <p>See which option your heart leans toward before your head talks you out of it.</p>
+      </div>
+      <div>
+        <h3>Want to know yourself better</h3>
+        <p>A few minutes a day to check in, notice patterns, and grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="final">
+  <div class="wrap">
+    <h2>Your answers are already inside you.</h2>
+    <p>Draw your first card today.</p>
+    <div class="stores">
+      <!-- TODO: same links as above -->
+      <a class="store-btn" href="#"><span><small>Download on the</small><strong>App Store</strong></span></a>
+      <a class="store-btn" href="#"><span><small>Get it on</small><strong>Google Play</strong></span></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 HiDae</span>
+    <nav>
+      <a href="https://powerful-fowl-780.notion.site/Privacy-Policy-35400487651a80a09e2ae4b8df9b8f0e" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="https://powerful-fowl-780.notion.site/Support-36a00487651a8038901adeb277475c4b" target="_blank" rel="noopener">Support</a>
+      <!-- TODO: replace with your support email -->
+      <a href="mailto:hello@example.com">Contact</a>
+      <!-- TODO: replace with your social handles -->
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.threads.net/" target="_blank" rel="noopener">Threads</a>
+      <a href="https://www.tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
